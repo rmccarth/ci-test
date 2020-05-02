@@ -12,6 +12,7 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile sources/runner.py sources/test_runner.py'
+                stash(name: 'compiled-results', includes: 'sources/*.py*')
             }
         }
         stage('Test') {
@@ -37,6 +38,7 @@ pipeline {
             }
             steps {
               dir(path: env.BUILD_ID) {
+                unstash(name: 'compiled-results') 
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F runner.py'"
               }
             }
