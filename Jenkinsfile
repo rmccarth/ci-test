@@ -11,7 +11,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'python -m py_compile runner.py test_runner.py'
+                sh 'python -m py_compile sources/runner.py sources/test_runner.py'
             }
         }
         stage('Test') {
