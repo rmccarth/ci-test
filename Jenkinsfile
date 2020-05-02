@@ -1,11 +1,18 @@
 pipeline {
-    agent any
+    agent none
+    options {
+        skipStagesAfterUnstable()
+    }
     stages {
-        stage('build') {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                }
+            }
             steps {
-		            echo "Running build phase..."
-                sh '/usr/bin/python test_hello.py'
+                sh 'python -m py_compile runner.py test_runner.py'
             }
         }
-    }
+}
 }
